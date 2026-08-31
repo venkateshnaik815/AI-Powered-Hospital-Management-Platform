@@ -15,7 +15,8 @@ class Settings(BaseSettings):
     
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:
-        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        # Use SQLite for local development without Docker
+        return "sqlite:///./healthml.db"
     
     # Security
     SECRET_KEY: str = "CHANGE_THIS_SUPER_SECRET_KEY_FOR_JWT"

@@ -1,56 +1,8 @@
 version: '3.8'
-
 services:
   backend:
-    build: ./backend
-    container_name: healthml_backend
+    build: .
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_SERVER=db
-      - POSTGRES_USER=healthadmin
-      - POSTGRES_PASSWORD=healthpassword
-      - POSTGRES_DB=healthml_db
-      - REDIS_URL=redis://redis:6379/0
-    depends_on:
-      - db
-      - redis
-
-  frontend:
-    build: ./frontend
-    container_name: healthml_frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
-    depends_on:
-      - backend
-
-  db:
-    image: postgres:15-alpine
-    container_name: healthml_postgres
-    environment:
-      POSTGRES_USER: healthadmin
-      POSTGRES_PASSWORD: healthpassword
-      POSTGRES_DB: healthml_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U healthadmin -d healthml_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  redis:
-    image: redis:7-alpine
-    container_name: healthml_redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-volumes:
-  postgres_data:
-  redis_data:
+      - DATABASE_URL=sqlite:///./healthml.db
