@@ -171,13 +171,15 @@ export default function Dashboard() {
               <tbody className="divide-y divide-slate-100 text-sm bg-white">
                 {patients.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-12 text-center">
-                      <div className="flex flex-col items-center justify-center text-slate-400">
-                        <Users className="h-10 w-10 mb-3 text-slate-300" />
-                        <p className="text-slate-600 font-medium">No patients found</p>
-                        <p className="text-sm mt-1">Click "Add Patient" to create a new record.</p>
-                      </div>
-                    </td>
+                      <td colSpan={4} className="px-6 py-12 text-center">
+                        <div className="flex flex-col items-center justify-center text-slate-400">
+                          <Users className="h-10 w-10 mb-3 text-slate-300" />
+                          <p className="text-slate-600 font-medium mb-3">No patients found</p>
+                          <button onClick={() => setIsModalOpen(true)} className="text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline">
+                            + Click here to Add a Patient
+                          </button>
+                        </div>
+                      </td>
                   </tr>
                 ) : patients.map((patient: any, idx: number) => (
                   <tr key={idx} className="hover:bg-slate-50/80 transition-colors group cursor-pointer">
