@@ -25,10 +25,11 @@ Base.metadata.create_all(bind=engine)
 def root():
     return {"message": "Welcome to HealthMLCloudEngine API"}
 
-from app.api.endpoints import auth, patients, appointments
+from app.api.endpoints import auth, patients, appointments, ml_predict
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(patients.router, prefix="/api/v1/patients", tags=["patients"])
 app.include_router(appointments.router, prefix="/api/v1/appointments", tags=["appointments"])
+app.include_router(ml_predict.router, prefix="/api/v1/predict", tags=["ml-predictions"])
 
 @app.get("/health")
 def health_check():
