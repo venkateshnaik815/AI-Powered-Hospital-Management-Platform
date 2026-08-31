@@ -16,6 +16,16 @@ services:
       - db
       - redis
 
+  frontend:
+    build: ./frontend
+    container_name: healthml_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - backend
+
   db:
     image: postgres:15-alpine
     container_name: healthml_postgres
