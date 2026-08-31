@@ -75,8 +75,8 @@ export default function HealthRiskPredictor({ patientId }: { patientId: number }
           </div>
           
           <div className="mt-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">AI Recommendations:</p>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
+            <p className="text-sm font-medium text-gray-700 mb-2">Here is what the AI suggests we do next:</p>
+            <ul className="list-disc pl-5 space-y-2 text-sm text-gray-600">
               {result.recommendations.map((rec: string, i: number) => (
                 <li key={i}>{rec}</li>
               ))}

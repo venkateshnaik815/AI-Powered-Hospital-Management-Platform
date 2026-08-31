@@ -50,8 +50,8 @@ export default function Dashboard() {
       {/* Header */}
       <header className="flex justify-between items-center mb-10">
         <div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Hospital Dashboard</h1>
-          <p className="text-sm text-slate-500 mt-1">Welcome back, Dr. Admin • {new Date().toLocaleDateString()}</p>
+          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Good morning, Dr. Smith 👋</h1>
+          <p className="text-sm text-slate-500 mt-1">Here is the latest overview of your patients and AI health insights for today, {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}.</p>
         </div>
         <div className="flex items-center space-x-6">
           <div className="relative group">
@@ -172,11 +172,14 @@ export default function Dashboard() {
                 {patients.length === 0 ? (
                   <tr>
                       <td colSpan={4} className="px-6 py-12 text-center">
-                        <div className="flex flex-col items-center justify-center text-slate-400">
-                          <Users className="h-10 w-10 mb-3 text-slate-300" />
-                          <p className="text-slate-600 font-medium mb-3">No patients found</p>
-                          <button onClick={() => setIsModalOpen(true)} className="text-sm font-semibold text-blue-600 hover:text-blue-800 hover:underline">
-                            + Click here to Add a Patient
+                        <div className="flex flex-col items-center justify-center text-slate-400 py-6">
+                          <div className="bg-blue-50 p-4 rounded-full mb-4">
+                            <Users className="h-10 w-10 text-blue-300" />
+                          </div>
+                          <p className="text-slate-700 font-bold mb-2">Your ward is looking quiet! ☕</p>
+                          <p className="text-slate-500 mb-6 text-sm max-w-sm">There are currently no patients assigned to you today. Take a moment to review your schedule, grab some coffee, or add a new patient to get started.</p>
+                          <button onClick={() => setIsModalOpen(true)} className="flex items-center text-sm font-semibold bg-white border border-slate-200 text-slate-700 px-6 py-2.5 rounded-full hover:bg-slate-50 transition-all hover:shadow-sm">
+                            <Plus className="h-4 w-4 mr-2 text-blue-500" /> Let's admit a new patient
                           </button>
                         </div>
                       </td>
@@ -238,19 +241,19 @@ export default function Dashboard() {
                 <span className="text-xs font-bold text-red-700 bg-red-50 px-2.5 py-1 rounded-md border border-red-100">Critical Alert</span>
                 <span className="text-xs font-medium text-slate-400">10 min ago</span>
               </div>
-              <p className="text-slate-900 font-bold mt-3 text-sm">ICU Readmission Risk</p>
-              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed">Patient #1042 shows an 82% probability of ICU readmission based on recent vitals anomaly detection.</p>
-              <button className="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center">Review Vitals <ChevronRight className="h-4 w-4 ml-1" /></button>
+              <p className="text-slate-900 font-bold mt-3 text-sm">Action Needed: Robert's Recovery</p>
+              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed">Based on the latest heart rate variability data, Robert (Patient #1042) has an 82% risk of needing ICU readmission tonight. Please review his chart.</p>
+              <button className="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center">Review Robert's Chart <ChevronRight className="h-4 w-4 ml-1" /></button>
             </div>
 
             <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
               <div className="flex justify-between items-start mb-2">
-                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">System Update</span>
+                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100">AI Assistant Update</span>
                 <span className="text-xs font-medium text-slate-400">1 hr ago</span>
               </div>
-              <p className="text-slate-900 font-bold mt-3 text-sm">Model Retraining Complete</p>
-              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed">The Diabetes Risk Prediction model (v2.4) has finished training with an improved F1 score of 0.94.</p>
+              <p className="text-slate-900 font-bold mt-3 text-sm">Diabetes Prediction Improved 🌟</p>
+              <p className="text-sm text-slate-600 mt-1.5 leading-relaxed">Good news! Your HealthML assistant just finished learning from this week's anonymous patient data. The Diabetes risk model is now 94% accurate at catching early signs.</p>
             </div>
           </div>
         </div>

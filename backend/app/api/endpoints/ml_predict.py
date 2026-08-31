@@ -39,7 +39,7 @@ def predict_health_risk(patient_id: int, db: Session = Depends(get_db)):
         "risk_level": "High" if final_risk_score > 40 else "Moderate" if final_risk_score > 20 else "Low",
         "ai_confidence_score": round(ai_confidence, 2),
         "recommendations": [
-            "Schedule follow-up checkup",
-            "Monitor blood pressure" if final_risk_score > 30 else "Maintain current diet"
+            "Consider scheduling a gentle follow-up checkup next month just to be safe.",
+            "It might be a good idea to keep an eye on blood pressure readings this week." if final_risk_score > 30 else "Keep up the great work! Your current diet and lifestyle look very healthy."
         ]
     }
