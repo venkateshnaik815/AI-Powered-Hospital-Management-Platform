@@ -1,6 +1,21 @@
 version: '3.8'
 
 services:
+  backend:
+    build: ./backend
+    container_name: healthml_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=healthadmin
+      - POSTGRES_PASSWORD=healthpassword
+      - POSTGRES_DB=healthml_db
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
   db:
     image: postgres:15-alpine
     container_name: healthml_postgres
