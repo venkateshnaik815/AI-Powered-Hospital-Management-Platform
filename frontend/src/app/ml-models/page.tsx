@@ -1,14 +1,57 @@
-import { BrainCircuit, Play, CheckCircle2, AlertTriangle, UploadCloud } from "lucide-react";
+"use client";
+import { BrainCircuit, Play, CheckCircle2, AlertTriangle, UploadCloud, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
 export default function MLModelsPage() {
+  const [isRetraining, setIsRetraining] = useState(false);
+  const [retrainProgress, setRetrainProgress] = useState(0);
+  const [showToast, setShowToast] = useState(false);
+
+  const handleRetrain = () => {
+    setIsRetraining(true);
+    setRetrainProgress(0);
+    
+    // Simulate training progress
+    const interval = setInterval(() => {
+      setRetrainProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsRetraining(false);
+          setShowToast(true);
+          setTimeout(() => setShowToast(false), 3000);
+          return 100;
+        }
+        return prev + 5;
+      });
+    }, 200);
+  };
+
+  const handleUpload = () => {
+    // Just mock a file upload click
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv,.json,.parquet';
+    input.onchange = () => {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    };
+    input.click();
+  };
+
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 max-w-7xl mx-auto relative">
+      {/* Success Toast */}
+      <div className={`fixed top-8 left-1/2 transform -translate-x-1/2 bg-emerald-600 text-white px-6 py-3 rounded-full shadow-lg font-medium text-sm transition-all z-50 flex items-center ${showToast ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 pointer-events-none'}`}>
+        <CheckCircle2 className="h-5 w-5 mr-2" />
+        Action completed successfully!
+      </div>
+
       <header className="flex justify-between items-end mb-8">
         <div>
           <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Machine Learning Models</h1>
           <p className="text-sm text-slate-500 mt-1">Manage, train, and deploy predictive healthcare AI models.</p>
         </div>
-        <button className="flex items-center text-sm font-semibold bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm hover:shadow">
+        <button onClick={handleUpload} className="flex items-center text-sm font-semibold bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm hover:shadow">
           <UploadCloud className="h-4 w-4 mr-2" />
           Upload Dataset
         </button>
@@ -94,24 +137,44 @@ export default function MLModelsPage() {
               </div>
 
               <div className="flex space-x-2">
-                <button className="flex-1 bg-white border border-slate-300 text-slate-700 font-medium text-xs py-2 rounded-lg hover:bg-slate-50">Stop Training</button>
-                <button className="flex-1 bg-indigo-600 text-white font-medium text-xs py-2 rounded-lg hover:bg-indigo-700">View MLflow Logs</button>
+                <button onClick={() => alert("Job stopped via MLflow API")} className="flex-1 bg-white border border-slate-300 text-slate-700 font-medium text-xs py-2 rounded-lg hover:bg-slate-50 transition-colors">Stop Training</button>
+                <button onClick={() => alert("Redirecting to MLflow UI")} className="flex-1 bg-indigo-600 text-white font-medium text-xs py-2 rounded-lg hover:bg-indigo-700 transition-colors">View MLflow Logs</button>
               </div>
             </div>
 
             <div className="border border-slate-200 rounded-xl p-5">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-slate-900 text-lg">Stroke Risk Predictor</h3>
-                <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-md flex items-center">
-                  <AlertTriangle className="w-3 h-3 mr-1" />
-                  Data Drift Detected
-                </span>
+                {isRetraining ? (
+                  <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md flex items-center">
+                    <RefreshCw className="w-3 h-3 mr-1 animate-spin" />
+                    Retraining... {retrainProgress}%
+                  </span>
+                ) : (
+                  <span className="bg-amber-100 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-md flex items-center">
+                    <AlertTriangle className="w-3 h-3 mr-1" />
+                    Data Drift Detected
+                  </span>
+                )}
               </div>
               <p className="text-sm text-slate-500 mb-4">Requires retraining. Input distribution drifted by 14% on feature 'blood_pressure'.</p>
               
-              <button className="w-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold text-sm py-2 rounded-lg hover:bg-amber-100 flex items-center justify-center">
-                <Play className="h-4 w-4 mr-2" />
-                Trigger Retraining Pipeline
+              <button 
+                onClick={handleRetrain}
+                disabled={isRetraining}
+                className="w-full bg-amber-50 border border-amber-200 text-amber-700 font-semibold text-sm py-2 rounded-lg hover:bg-amber-100 flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isRetraining ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Triggering Airflow Pipeline...
+                  </>
+                ) : (
+                  <>
+                    <Play className="h-4 w-4 mr-2" />
+                    Trigger Retraining Pipeline
+                  </>
+                )}
               </button>
             </div>
           </div>
