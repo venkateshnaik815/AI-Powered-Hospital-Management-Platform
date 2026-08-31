@@ -16,12 +16,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+from app.core.database import engine, Base
+from app.models import user, patient, appointment
+
+Base.metadata.create_all(bind=engine)
+
 @app.get("/")
 def root():
     return {"message": "Welcome to HealthMLCloudEngine API"}
 
-from app.api.endpoints import auth
+from app.api.endpoints import auth, patients, appointments
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(patients.router, prefix="/api/v1/patients", tags=["patients"])
+app.include_router(appointments.router, prefix="/api/v1/appointments", tags=["appointments"])
 
 @app.get("/health")
 def health_check():
