@@ -182,7 +182,7 @@ export default function Dashboard() {
                       </td>
                   </tr>
                 ) : patients.map((patient: any, idx: number) => (
-                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors group cursor-pointer">
+                  <tr key={idx} className="hover:bg-slate-50/80 transition-colors group cursor-pointer" onClick={() => window.location.href = `/patients/${patient.id}`}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs mr-3">
