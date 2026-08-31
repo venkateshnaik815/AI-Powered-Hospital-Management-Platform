@@ -20,6 +20,7 @@ export default function PatientsPage() {
       .catch(err => {
         console.error(err);
         setIsLoading(false);
+        alert("Error: Backend server is down. Please run start.bat!");
       });
   };
 
@@ -30,7 +31,7 @@ export default function PatientsPage() {
   const handleAddPatient = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("http://127.0.0.1:8000/api/v1/patients", {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/patients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -39,11 +40,13 @@ export default function PatientsPage() {
           medical_history: newPatient.diagnosis
         })
       });
+      if (!res.ok) throw new Error("Failed");
       setIsModalOpen(false);
       setNewPatient({ first_name: "", last_name: "", diagnosis: "" });
       fetchPatients(); 
     } catch (e) {
       console.error(e);
+      alert("Error: Backend server is disconnected. Data could not be saved.");
     }
   };
 

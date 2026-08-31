@@ -20,6 +20,7 @@ export default function AppointmentsPage() {
       setPatients(await patRes.json());
     } catch (e) {
       console.error(e);
+      alert("Error: Backend server is down. Please run start.bat!");
     }
     setIsLoading(false);
   };
@@ -32,25 +33,26 @@ export default function AppointmentsPage() {
     e.preventDefault();
     if (!newAppt.patient_id) return alert("Please select a patient.");
 
-    // Combine date and time for ISO string
     const dateTime = new Date(`${newAppt.date}T${newAppt.time}:00`).toISOString();
 
     try {
-      await fetch("http://127.0.0.1:8000/api/v1/appointments", {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           patient_id: parseInt(newAppt.patient_id),
-          doctor_id: 1, // Mock doctor ID since auth isn't fully wired for frontend yet
+          doctor_id: 1,
           appointment_date: dateTime,
           notes: newAppt.notes
         })
       });
+      if (!res.ok) throw new Error("Failed");
       setIsModalOpen(false);
       setNewAppt({ patient_id: "", date: "", time: "", notes: "" });
       fetchData();
     } catch (e) {
       console.error(e);
+      alert("Error: Backend server is disconnected. Data could not be saved.");
     }
   };
 

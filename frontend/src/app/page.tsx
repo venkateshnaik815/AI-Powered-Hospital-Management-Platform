@@ -15,6 +15,7 @@ export default function Dashboard() {
       setPatients(data);
     } catch (e) {
       console.error(e);
+      alert("Error: Backend server is down. Please run start.bat!");
     }
   };
 
@@ -25,7 +26,7 @@ export default function Dashboard() {
   const handleAddPatient = async (e) => {
     e.preventDefault();
     try {
-      await fetch("http://127.0.0.1:8000/api/v1/patients", {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/patients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -34,11 +35,13 @@ export default function Dashboard() {
           medical_history: newPatient.diagnosis
         })
       });
+      if (!res.ok) throw new Error("Failed to save");
       setIsModalOpen(false);
       setNewPatient({ first_name: "", last_name: "", diagnosis: "" });
       fetchPatients(); 
     } catch (e) {
       console.error(e);
+      alert("Error: Backend server is disconnected. Please make sure the backend is running on port 8000.");
     }
   };
 
